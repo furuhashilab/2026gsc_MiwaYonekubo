@@ -5,7 +5,7 @@
 **Where Does the Catbus Stop? — Open Data of Studio Ghibli Pilgrimage Sites Using OpenStreetMap**
 
 著者：米久保美和  
-©  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
+© FuruhashiLabratory/米久保美和 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
 最終更新：2026年11月
 
 ---
@@ -29,7 +29,7 @@
 
 ### 問題提起
 
-> 「猫バスはどこに停まるのか」――この素朴な疑問を、現在の地図サービスに入力しても正確な答えは返ってこない。
+> 例「猫バスはどこに停まるのか」――この素朴な疑問を、現在の地図サービスに入力しても正確な答えは返ってこない。
 
 Google マップにも、既存の観光アプリにも、ジブリ聖地の情報は断片的にしか存在しない。ましてや、誰でも編集・検証・再利用できる形式での整備はほぼなされていない。
 
@@ -56,6 +56,7 @@ Google マップにも、既存の観光アプリにも、ジブリ聖地の情�
 - スタジオジブリ公式サイトおよびジブリ美術館の公開情報
 - 「ジブリの立体建造物展」等の公式展示資料
 - 国内各自治体が公認しているジブリ関連観光スポット
+- 画像を使用する場合は、スタジオジブリで画像提供している無料画像のみ（新作までの多くの作品が使用可能）
 
 ### OSMタグスキームの設計
 
@@ -109,12 +110,12 @@ JOSM（Java OpenStreetMap Editor）を用いて、選定した地点を OSM に�
 - [Medium 投稿]() ← 追加予定
 - [参考文献リスト（Issues）](../../issues)
 - [古橋研究室 GitHub Organization](https://github.com/furuhashilab/)
-- PermaLink 
+- PermaLink
 
 ---
 
 ## ライセンス
 
-©  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
+© FuruhashiLabratory/米久保美和 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
 本リポジトリのコンテンツは [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) のもとで公開。
 
