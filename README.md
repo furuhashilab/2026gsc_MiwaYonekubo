@@ -1,6 +1,6 @@
 2026gsc_MiwaYonekubo
 
-# 猫バスはどこに停まるのか――OpenStreetMapによるジブリ聖地情報のオープンデータ化
+# 猫バスはどこに停まるのか―OpenStreetMapによるジブリ聖地情報のオープンデータ化
 
 **Where Does the Catbus Stop? — Open Data of Studio Ghibli Pilgrimage Sites Using OpenStreetMap**
 
