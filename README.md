@@ -4,8 +4,8 @@
 
 **Where Does the Catbus Stop? — Open Data of Studio Ghibli Pilgrimage Sites Using OpenStreetMap**
 
-著者：miwa（青山学院大学 地球社会共生学部 古橋研究室）  
-© FuruhashiLaboratory/miwa, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
+著者：米久保美和 
+© FuruhashiLaboratory/米久保美和, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
 最終更新：2026年11月
 
 ---
@@ -163,7 +163,8 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 
 ### スタジオジブリの公式方針との整合性
 
-スタジオジブリは2020年から公式スチール画像を著作権表示条件付きで無償提供しており、非商業的な文化的活動に対する親和性を示している（ただし映像素材は対象外）。本研究は非商業・学術目的であり、公認地点のみを対象とすることで権利侵害のリスクを最小化する。
+スタジオジブリは2020年から公式スチール画像を著作権表示条件付きで無償提供しており、非商業的な文化的活動に対する親和性を示している（ただし映像素材は対象外）。
+本研究は非商業・学術目的であり、公認地点のみを対象とすることで権利侵害のリスクを最小化する。
 
 ---
 
@@ -227,6 +228,11 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 
 ---
 
+## AIの使用
+
+本研究の資料収集・文章構成・マップ制作にあたり、Anthropic の AI アシスタント Claude（claude-sonnet-4-6）を活用した。
+
+---
 ## ライセンス
 
 © FuruhashiLaboratory/miwa, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
