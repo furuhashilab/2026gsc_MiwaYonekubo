@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>猫バスはどこに停まるのか — ジブリ聖地巡礼マップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg: #f7f2e8;
+      --fg: #2d2a24;
+      --fg-sub: #6b6355;
+      --accent: #4a7c59;
+      --accent2: #c47f2b;
+      --panel: #fffdf7;
+      --border: #d8d0bc;
+      --shadow: rgba(45,42,36,.14);
+      --tag-bg: #e8f0eb;
+      --tag-fg: #2d5940;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1a16;
+        --fg: #e8e2d6;
+        --fg-sub: #9e9484;
+        --accent: #6aad80;
+        --accent2: #d9983e;
+        --panel: #252219;
+        --border: #3a3628;
+        --shadow: rgba(0,0,0,.4);
+        --tag-bg: #1e3327;
+        --tag-fg: #8fcfa8;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    /* ── Header ── */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    #header h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex: 1;
+      line-height: 1.3;
+    }
+    #header h1 span {
+      display: block;
+      font-size: .68rem;
+      font-weight: 400;
+      color: var(--fg-sub);
+      letter-spacing: .03em;
+      margin-top: 1px;
+    }
+    .badge {
+      font-size: .68rem;
+      font-weight: 500;
+      background: var(--tag-bg);
+      color: var(--tag-fg);
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ── Map ── */
+    #map {
+      position: fixed;
+      inset: 0;
+      top: 56px;
+      bottom: 0;
+    }
+
+    /* ── Info panel ── */
+    #panel {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 1000;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px var(--shadow);
+      padding: 16px 20px;
+      max-width: 420px;
+      transition: transform .3s ease, opacity .3s ease;
+    }
+    #panel.hidden {
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #panel-film {
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      color: var(--accent2);
+      margin-bottom: 4px;
+    }
+    #panel-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+    #panel-desc {
+      font-size: .82rem;
+      color: var(--fg-sub);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    #panel-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    #panel-tags span {
+      font-size: .68rem;
+      background: var(--tag-bg);
+      color: var(--tag-fg);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    #panel-close {
+      position: absolute;
+      top: 12px; right: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--fg-sub);
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 4px;
+    }
+    #panel-close:hover { color: var(--fg); }
+
+    /* ── Legend ── */
+    #legend {
+      position: fixed;
+      top: 72px;
+      right: 12px;
+      z-index: 1000;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: .72rem;
+      color: var(--fg-sub);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    #legend p { font-weight: 600; color: var(--fg); margin-bottom: 6px; font-size: .74rem; }
+    .legend-row { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      flex-shrink: 0;
+    }
+
+    /* ── Marker ── */
+    .site-marker {
+      width: 28px; height: 28px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .site-marker:hover { transform: rotate(-45deg) scale(1.2); }
+
+    .leaflet-control-attribution { font-size: .62rem !important; }
+  </style>
+</head>
+<body>
+
+<div id="header">
+  <h1>猫バスはどこに停まるのか<span>OpenStreetMap × ジブリ聖地巡礼マップ（試作版）</span></h1>
+  <span class="badge">OSMデータ</span>
+</div>
+
+<div id="map"></div>
+
+<div id="legend">
+  <p>作品別</p>
+  <div class="legend-row"><div class="legend-dot" style="background:#4a7c59"></div>となりのトトロ</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#2b6cb0"></div>千と千尋の神隠し</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#7c4d2b"></div>もののけ姫</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#9b4fb5"></div>耳をすませば</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#c47f2b"></div>魔女の宅急便</div>
+</div>
+
+<div id="panel" class="hidden">
+  <button id="panel-close" aria-label="閉じる">✕</button>
+  <div id="panel-film"></div>
+  <div id="panel-name"></div>
+  <div id="panel-desc"></div>
+  <div id="panel-tags"></div>
+</div>
+
+<script>
+const SITES = [
+  {
+    name: "狭山丘陵（トトロの森）",
+    film: "となりのトトロ",
+    color: "#4a7c59",
+    lat: 35.762, lng: 139.364,
+    desc: "「となりのトトロ」の舞台モデルとなった丘陵地帯。東京都・埼玉県にまたがる緑豊かな里山で、映画に登場する雑木林の風景が今も残る。",
+    tags: ["公認モデル地", "自然・里山", "埼玉/東京"],
+    official: true
+  },
+  {
+    name: "江戸東京たてもの園",
+    film: "千と千尋の神隠し",
+    color: "#2b6cb0",
+    lat: 35.712, lng: 139.529,
+    desc: "宮崎駿監督が油屋のデザイン参考にしたと公言している野外博物館。大正・昭和の建築物が移築・保存されており、湯屋の雰囲気を強く感じられる。",
+    tags: ["公認参考地", "歴史建築", "小金井市"],
+    official: true
+  },
+  {
+    name: "道後温泉本館",
+    film: "千と千尋の神隠し",
+    color: "#2b6cb0",
+    lat: 33.851, lng: 132.786,
+    desc: "日本最古の温泉のひとつ。明治時代の木造建築が「油屋」のモデルのひとつとして広く知られ、訪日外国人を含む巡礼者が多い。",
+    tags: ["有力モデル地", "温泉", "愛媛県松山市"],
+    official: false
+  },
+  {
+    name: "有馬温泉",
+    film: "千と千尋の神隠し",
+    color: "#2b6cb0",
+    lat: 34.799, lng: 135.245,
+    desc: "日本三古湯のひとつ。石畳の路地や木造の温泉宿が立ち並ぶ景観が、湯屋の世界観に通じるとして聖地のひとつに挙げられる。",
+    tags: ["有力モデル地", "温泉", "兵庫県神戸市"],
+    official: false
+  },
+  {
+    name: "屋久島（白谷雲水峡）",
+    film: "もののけ姫",
+    color: "#7c4d2b",
+    lat: 30.333, lng: 130.533,
+    desc: "樹齢数千年の屋久杉が生い茂る原生林。宮崎監督がスタッフとともにロケハンを行ったとされ、シシ神の森のモデルとして名高い。",
+    tags: ["公認ロケハン地", "世界遺産", "鹿児島県"],
+    official: true
+  },
+  {
+    name: "聖蹟桜ヶ丘",
+    film: "耳をすませば",
+    color: "#9b4fb5",
+    lat: 35.624, lng: 139.421,
+    desc: "「耳をすませば」の舞台となった多摩市の住宅街。物語に登場するロータリーや坂道、図書館などが実在し、ファンの聖地として定着している。",
+    tags: ["公認モデル地", "住宅街・坂道", "東京都多摩市"],
+    official: true
+  },
+  {
+    name: "スウェーデン（ヴィスビュー）",
+    film: "魔女の宅急便",
+    color: "#c47f2b",
+    lat: 57.638, lng: 18.295,
+    desc: "コリコの町のモデルのひとつとされる、バルト海に浮かぶゴットランド島の中世都市。石畳と赤い屋根の街並みが映画の世界観に重なる。",
+    tags: ["有力モデル地", "海外", "スウェーデン"],
+    official: false
+  }
+];
+
+const map = L.map('map', { center: [36.5, 136.0], zoom: 5 });
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 18
+}).addTo(map);
+
+const panel    = document.getElementById('panel');
+const panelFilm = document.getElementById('panel-film');
+const panelName = document.getElementById('panel-name');
+const panelDesc = document.getElementById('panel-desc');
+const panelTags = document.getElementById('panel-tags');
+
+function createMarkerIcon(color) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="site-marker" style="background:${color}"></div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 28]
+  });
+}
+
+SITES.forEach(site => {
+  const marker = L.marker([site.lat, site.lng], {
+    icon: createMarkerIcon(site.color),
+    title: site.name
+  }).addTo(map);
+
+  marker.on('click', () => {
+    panelFilm.textContent = site.film;
+    panelFilm.style.color = site.color;
+    panelName.textContent = site.name;
+    panelDesc.textContent = site.desc;
+    panelTags.innerHTML = site.tags.map(t => `<span>${t}</span>`).join('');
+    if (site.official) {
+      panelTags.innerHTML += `<span style="background:#fef3cd;color:#7d5a0a">✓ 公式言及あり</span>`;
+    }
+    panel.classList.remove('hidden');
+    map.panTo([site.lat, site.lng], { animate: true });
+  });
+});
+
+document.getElementById('panel-close').addEventListener('click', () => {
+  panel.classList.add('hidden');
+});
+</script>
+</body>
+</html>
