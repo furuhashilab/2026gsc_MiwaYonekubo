@@ -180,7 +180,7 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 
 2026年12月
  ├─ JOSM を用いた実際の OSM へのマッピング作業開始
- ├─ 公認地点の現地調査・写真撮影（狭山丘陵・八国山緑地）
+ ├─ 公認地点の調査・写真撮影（狭山丘陵・八国山緑地）
  ├─ タグスキームの OSM コミュニティへのフィードバック収集
  └─ Medium 投稿（中間発表成果報告）
 
@@ -199,7 +199,7 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 
 - 試作マップ地点数：**4地点**（公認地点のみ）
 - 対象作品：**となりのトトロ**
-- 実際のOSMマッピング済み地点数：準備中（12月開始予定）
+- 実際のOSMマッピング済み地点数：12月から本格的に始動
 - タグスキーム提案書：策定済み（上記 Methods 参照）
 
 **🗺️ 試作マップ（公認4地点）：** https://claude.ai/artifact/M8ExZWRmntFmaVBQCfYVU9
@@ -223,7 +223,7 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 - 🗺️ [試作マップ（ネコバス聖地巡礼マップ）](https://claude.ai/artifact/M8ExZWRmntFmaVBQCfYVU9)
 - 📝 [プレゼン資料]() ← 中間発表後に追加
 - 📰 [Medium 投稿]() ← 追加予定
-- 🐛 [参考文献リスト（Issues）](../../issues)
+- 🐛 [参考文献リスト（Issues）](https://github.com/furuhashilab/2026gsc_MiwaYonekubo/issues/1)
 - 🏫 [古橋研究室 GitHub Organization](https://github.com/furuhashilab/)
 
 ---
@@ -235,6 +235,6 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 ---
 ## ライセンス
 
-© FuruhashiLaboratory/miwa, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
-本リポジトリのコンテンツは [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) のもとで公開されています。  
-マッピングデータは [ODbL](https://opendatacommons.org/licenses/odbl/) のもとで OpenStreetMap に登録されます。
+© FuruhashiLaboratory/米久保美和, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
+本リポジトリのコンテンツは [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) のもとで公開されている。
+マッピングデータは [ODbL](https://opendatacommons.org/licenses/odbl/) のもとで OpenStreetMap に登録される。
