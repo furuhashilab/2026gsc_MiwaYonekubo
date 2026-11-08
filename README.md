@@ -5,7 +5,7 @@
 **Where Does the Catbus Stop? — Open Data of Studio Ghibli Pilgrimage Sites Using OpenStreetMap**
 
 著者：米久保美和  
-© FuruhashiLaboratory/米久保美和, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
+©  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)  
 最終更新：2026年11月
 
 ---
