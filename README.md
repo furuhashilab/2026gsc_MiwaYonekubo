@@ -206,7 +206,7 @@ OSMと英国政府公式地図データを比較し、主要道路において�
 - 実際のOSMマッピング済み地点数：12月から本格的に始動
 - タグスキーム提案書：策定済み（上記 Methods 参照）
 
-**🗺️ 試作マップ（公認4地点）：** https://claude.ai/artifact/M8ExZWRmntFmaVBQCfYVU9
+**🗺️ 試作マップ（公認4地点）：** file:///Users/miwa/Downloads/ghibli-map-3.html
 
 ---
 
