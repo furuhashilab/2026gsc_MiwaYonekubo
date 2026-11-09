@@ -59,7 +59,8 @@
     #panel {
       position: fixed; bottom: 20px; left: 226px; right: 16px;
       z-index: 1000; background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-      box-shadow: 0 8px 32px var(--shadow); padding: 16px 20px; max-width: 420px;
+      box-shadow: 0 8px 32px var(--shadow); padding: 16px 20px; max-width: 460px;
+      max-height: calc(100vh - 90px); overflow-y: auto;
       transition: transform .28s ease, opacity .28s ease;
     }
     #panel.hidden { transform: translateY(16px); opacity: 0; pointer-events: none; }
@@ -70,6 +71,24 @@
     #p-tags span { font-size: .64rem; background: var(--tag-bg); color: var(--tag-fg); padding: 3px 10px; border-radius: 20px; }
     #p-close { position: absolute; top: 10px; right: 12px; background: none; border: none; cursor: pointer; color: var(--fg-sub); font-size: 1rem; padding: 4px; }
     #p-close:hover { color: var(--fg); }
+
+    /* Scene gallery */
+    #p-scenes { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 10px; }
+    #p-scenes h3 { font-size: .66rem; font-weight: 700; color: var(--fg-sub); letter-spacing: .07em; margin-bottom: 8px; }
+    .scene-list { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .scene-list::-webkit-scrollbar { height: 4px; }
+    .scene-list::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
+    .scene-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    .scene-card { flex-shrink: 0; width: 150px; cursor: pointer; }
+    .scene-card img { width: 150px; height: 84px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block; background: var(--border); }
+    .scene-card .scene-label { font-size: .62rem; color: var(--fg-sub); margin-top: 4px; line-height: 1.4; }
+    /* Lightbox */
+    #lightbox { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.85); align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 75vh; border-radius: 10px; object-fit: contain; }
+    #lb-caption { color: #fff; font-size: .82rem; text-align: center; max-width: 80vw; }
+    #lb-credit { color: rgba(255,255,255,.5); font-size: .62rem; }
+    #lightbox { cursor: pointer; }
 
     .leaflet-control-attribution { font-size: .6rem !important; }
     @media (max-width: 600px) { #sidebar { display: none; } #map { left: 0; } #panel { left: 12px; right: 12px; } }
@@ -96,6 +115,16 @@
   <div id="p-name"></div>
   <div id="p-desc"></div>
   <div id="p-tags"></div>
+  <div id="p-scenes">
+    <h3>🎬 映画の該当シーン（© スタジオジブリ）</h3>
+    <div class="scene-list" id="p-scene-list"></div>
+  </div>
+</div>
+
+<div id="lightbox">
+  <img id="lb-img" src="" alt="">
+  <div id="lb-caption"></div>
+  <div id="lb-credit">© スタジオジブリ — 常識の範囲内での利用（公式提供画像）</div>
 </div>
 
 <script>
@@ -107,6 +136,11 @@ const STOPS = [
     lat: 35.762, lng: 139.364,
     desc: "「となりのトトロ」の舞台モデルとなった丘陵地帯。宮崎監督が実際にロケハンした里山で、現在は「公益財団法人 トトロのふるさと基金」が自然環境を公式に保全・管理している。東京都と埼玉県にまたがる緑の景観は、映画に登場する雑木林や田園風景そのものだ。",
     tags: ["公認モデル地", "自然・里山", "トトロのふるさと基金", "公益財団法人認定"],
+    scenes: [
+      { img: "totoro007", caption: "大楠（クスノキ）の前でトトロと出会うサツキとメイ" },
+      { img: "totoro010", caption: "森の中でどんぐりをまくトトロ—雑木林のシーン" },
+      { img: "totoro015", caption: "夜の森、巨大なトトロと木の上のサツキとメイ" },
+    ],
   },
   {
     num: 2,
@@ -115,6 +149,10 @@ const STOPS = [
     lat: 35.750, lng: 139.468,
     desc: "映画中に登場する「七国山病院」のモデルとなった緑地。東村山市が公式観光資源として認定しており、「となりのトトロ」の舞台として案内板が設置されている。サツキとメイのお母さんが入院していた病院のある丘のモデル。",
     tags: ["公認モデル地", "七国山病院モデル", "東村山市公認", "案内板設置済み"],
+    scenes: [
+      { img: "totoro038", caption: "丘の上の七国山病院—お母さんが入院する病院のシーン" },
+      { img: "totoro042", caption: "病院でお母さんを見舞うサツキとメイのお父さん" },
+    ],
   },
   {
     num: 3,
@@ -123,6 +161,11 @@ const STOPS = [
     lat: 35.806, lng: 139.481,
     desc: "所沢市内に実在するバス停で、映画に登場する「松郷」バス停のモデル。地元の西武バスが運行しており、所沢市の公認ジブリ関連スポットとして観光マップにも掲載されている。ネコバスが最初に現れるあのバス停だ。",
     tags: ["公認モデル地", "実在バス停", "所沢市公認", "西武バス運行中"],
+    scenes: [
+      { img: "totoro020", caption: "雨のバス停でトトロに傘を貸すサツキ—映画屈指の名シーン" },
+      { img: "totoro022", caption: "現れるネコバス—バス停に突如やってくる猫型のバス" },
+      { img: "totoro023", caption: "ネコバスに乗り込むトトロ" },
+    ],
   },
   {
     num: 4,
@@ -131,14 +174,38 @@ const STOPS = [
     lat: 35.806, lng: 139.400,
     desc: "宮崎監督が移住し、「となりのトトロ」の舞台設定の基礎となった農村景観が残る地区。所沢市はこの地域を「となりのトトロのまち」として公式に観光プロモーションに活用している。",
     tags: ["公認関連地", "宮崎監督ゆかりの地", "所沢市公認"],
+    scenes: [
+      { img: "totoro001", caption: "田舎道を走るサツキとメイ—映画冒頭の農村風景" },
+      { img: "totoro003", caption: "新居に引っ越してくる草壁家—里山の一軒家" },
+      { img: "totoro005", caption: "田んぼの広がる農村の風景" },
+    ],
   },
 ];
 
-const map = L.map('map', { center: [35.775, 139.42], zoom: 11 });
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const map = L.map('map', { center: [35.775, 139.42], zoom: 13 });
+
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  maxZoom: 18
-}).addTo(map);
+  maxZoom: 19
+});
+const satLayer = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  { attribution: 'Tiles © Esri — Esri, Maxar, Earthstar Geographics', maxZoom: 19 }
+);
+const labelLayer = L.tileLayer(
+  'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 19, opacity: 0.9 }
+);
+
+satLayer.addTo(map);
+labelLayer.addTo(map);
+
+const baseMaps = { '🗺️ 地図': osmLayer, '🛰️ 航空写真': satLayer };
+L.control.layers(baseMaps, {}, { position: 'topright', collapsed: false }).addTo(map);
+map.on('baselayerchange', e => {
+  if (e.name === '🛰️ 航空写真') labelLayer.addTo(map);
+  else map.removeLayer(labelLayer);
+});
 
 L.polyline(STOPS.map(s => [s.lat, s.lng]), {
   color: '#3a6e44', weight: 4, opacity: .7, dashArray: '12,8'
@@ -147,14 +214,36 @@ L.polyline(STOPS.map(s => [s.lat, s.lng]), {
 const panel = document.getElementById('panel');
 const list  = document.getElementById('stop-list');
 
+const BASE = 'https://www.ghibli.jp/gallery/';
+
 function open(stop) {
   document.getElementById('p-num').textContent  = `🚌 ネコバス停留所 第 ${stop.num} 停`;
   document.getElementById('p-name').textContent = stop.name;
   document.getElementById('p-desc').textContent = stop.desc;
   document.getElementById('p-tags').innerHTML   = stop.tags.map(t => `<span>${t}</span>`).join('');
+
+  const sceneList = document.getElementById('p-scene-list');
+  sceneList.innerHTML = '';
+  (stop.scenes || []).forEach(sc => {
+    const url = BASE + sc.img + '.jpg';
+    const card = document.createElement('div');
+    card.className = 'scene-card';
+    card.innerHTML = `<img src="${url}" alt="${sc.caption}" loading="lazy"><div class="scene-label">${sc.caption}</div>`;
+    card.querySelector('img').onclick = () => openLightbox(url, sc.caption);
+    sceneList.appendChild(card);
+  });
+
   panel.classList.remove('hidden');
   map.panTo([stop.lat, stop.lng], { animate: true });
 }
+
+const lb = document.getElementById('lightbox');
+function openLightbox(src, caption) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-caption').textContent = caption;
+  lb.classList.add('open');
+}
+lb.onclick = () => lb.classList.remove('open');
 
 STOPS.forEach(stop => {
   const icon = L.divIcon({
