@@ -240,7 +240,7 @@ OSMデータにWikipediaのタグを紐付ければ、説明を入れなくて�
 
 ## 関連リンク
 
-- 📝 [プレゼン資料]() 
+- 📝 [プレゼン資料](https://docs.google.com/presentation/d/16kBLi5sB8JWktVqjeWNaTLZ47qA9vBVFW6kN-TPk3yQ/edit?usp=sharing) 
 - 📰 [Medium 投稿]() 
 - 🐛 [参考文献リスト（Issues）](https://github.com/furuhashilab/2026gsc_MiwaYonekubo/issues/1)
 - 🏫 [古橋研究室 GitHub Organization](https://github.com/furuhashilab/)
