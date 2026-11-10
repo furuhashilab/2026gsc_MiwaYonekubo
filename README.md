@@ -1,6 +1,6 @@
 2026gsc_MiwaYonekubo
 
-# ネコバスはどこに停まるのか―OpenStreetMapによるジブリ聖地情報の公式化
+# ネコバスはどこに停まるのか―OpenStreetMapによるジブリ聖地巡礼用のマップを作成
 
 **Where Does the Catbus Stop? — Open Data of Studio Ghibli Pilgrimage Sites Using OpenStreetMap**
 
