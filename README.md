@@ -222,7 +222,9 @@ OSMデータにWikipediaのタグを紐付ければ、説明を入れなくて�
 - 実際のOSMマッピング済み地点数：12月から本格的に始動
 - タグスキーム提案書：策定済み（上記 Methods 参照）
 
-**🗺️ 試作マップ（ネコバス聖地巡礼マップ）➡️ジブリ画像を使用したマッピングはリンクの作成ができなかったため,HTMLに掲載。
+**🗺️ 試作マップ（ネコバス聖地巡礼マップ）➡️ジブリ画像を使用したマッピングはリンクの作成ができなかったため,以下のHTMLを掲載。
+
+file:///Users/miwa/Downloads/ghibli-map-3.html
 
 ---
 
@@ -241,7 +243,7 @@ OSMデータにWikipediaのタグを紐付ければ、説明を入れなくて�
 ## 関連リンク
 
 - 📝 [プレゼン資料](https://docs.google.com/presentation/d/16kBLi5sB8JWktVqjeWNaTLZ47qA9vBVFW6kN-TPk3yQ/edit?usp=sharing) 
-- 📰 [Medium 投稿]() 
+- 📰 [Medium 投稿](https://medium.com/furuhashilab/%E3%82%BC%E3%83%9F%E8%AB%96-%E4%B8%AD%E9%96%93%E7%99%BA%E8%A1%A8-a2bf78d634bf) 
 - 🐛 [参考文献リスト（Issues）](https://github.com/furuhashilab/2026gsc_MiwaYonekubo/issues/1)
 - 🏫 [古橋研究室 GitHub Organization](https://github.com/furuhashilab/)
 
